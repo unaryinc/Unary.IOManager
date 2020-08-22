@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Unary.IOManager.Managers;
 
@@ -10,25 +11,37 @@ namespace Unary.IOManager
 {
     public class IOManager
     {
-        private readonly OutputManager OutputManager;
+        private readonly OutputFactory OutputFactory;
 
-        public KeyboardManager Keyboard { get; private set; }
-        public MouseManager Mouse { get; private set; }
+        public App App { get; private set; }
+        public Window Window { get; private set; }
+        public Keyboard Keyboard { get; private set; }
+        public Mouse Mouse { get; private set; }
 
-        public WindowManager Window { get; private set; }
-
-        private readonly InputManager InputManager;
-
-        public IOManager(Process TargetProcess)
+        public IOManager(string TargetProcess)
         {
-            OutputManager = new OutputManager();
+            OutputFactory = new OutputFactory();
+            App = new App(TargetProcess);
+            Window = new Window(App);
+            Keyboard = new Keyboard(App, OutputFactory);
+            Mouse = new Mouse(App, OutputFactory);
+        }
 
-            Keyboard = new KeyboardManager(OutputManager);
-            Mouse = new MouseManager(OutputManager);
+        public void Init()
+        {
+            App.Init();
+        }
 
-            Window = new WindowManager(TargetProcess);
+        public void Poll()
+        {
+            App.Poll();
 
-            InputManager = new InputManager(Window);
+            if(App.Running)
+            {
+                Window.Poll();
+                Keyboard.Poll();
+                Mouse.Poll();
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Unary.IOManager.Native
 {
-    public struct MouseInput
+    public struct MouseOutput
     {
         public int X;
         public int Y;

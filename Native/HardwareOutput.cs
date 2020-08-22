@@ -1,6 +1,6 @@
 ﻿namespace Unary.IOManager.Native
 {
-    public struct HardwareInput
+    public struct HardwareOutput
     {
         public uint Msg;
         public ushort ParamL;

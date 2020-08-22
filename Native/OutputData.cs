@@ -3,13 +3,13 @@
 namespace Unary.IOManager.Native
 {
     [StructLayout(LayoutKind.Explicit)]
-    public struct InputData
+    public struct OutputData
     {
         [FieldOffset(0)]
-        public MouseInput Mouse;
+        public MouseOutput Mouse;
         [FieldOffset(0)]
-        public KeyboardInput Keyboard;
+        public KeyboardOutput Keyboard;
         [FieldOffset(0)]
-        public HardwareInput Hardware;
+        public HardwareOutput Hardware;
     }
 }

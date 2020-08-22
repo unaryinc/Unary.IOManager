@@ -2,7 +2,7 @@
 
 namespace Unary.IOManager.Native
 {
-    public struct KeyboardInput
+    public struct KeyboardOutput
     {
         public ushort KeyCode;
         public ushort Scan;

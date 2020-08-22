@@ -1,8 +1,8 @@
 ﻿namespace Unary.IOManager.Native
 {
-    public struct Input
+    public struct Output
     {
         public uint Type;
-        public InputData Data;
+        public OutputData Data;
     }
 }

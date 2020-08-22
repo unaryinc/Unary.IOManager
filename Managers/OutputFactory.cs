@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Unary.IOManager.Native;
 
 namespace Unary.IOManager.Managers
 {
-    public class OutputManager : IEnumerable<Input>
+    public class OutputFactory : IEnumerable<Output>
     {
-        private readonly List<Input> List;
+        private readonly List<Output> List;
 
-        public OutputManager()
+        public OutputFactory()
         {
-            List = new List<Input>();
+            List = new List<Output>();
         }
 
-        public Input[] ToArray()
+        public Output[] ToArray()
         {
             return List.ToArray();
         }
 
-        public IEnumerator<Input> GetEnumerator()
+        public IEnumerator<Output> GetEnumerator()
         {
             return List.GetEnumerator();
         }
@@ -33,7 +30,7 @@ namespace Unary.IOManager.Managers
             return GetEnumerator();
         }
 
-        public Input this[int position]
+        public Output this[int position]
         {
             get
             {
@@ -70,14 +67,14 @@ namespace Unary.IOManager.Managers
             }
         }
 
-        public OutputManager AddKeyDown(VirtualKeyCode keyCode)
+        public OutputFactory AddKeyDown(VirtualKeyCode keyCode)
         {
-            Input Down = new Input
+            Output Down = new Output
             {
                 Type = (uint)InputType.Keyboard,
                 Data =
                 {
-                    Keyboard = new KeyboardInput
+                    Keyboard = new KeyboardOutput
                     {
                         KeyCode = (ushort)keyCode,
                         Scan = (ushort)(Methods.MapVirtualKey((uint)keyCode, 0) & 0xFFU),
@@ -92,14 +89,14 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddKeyUp(VirtualKeyCode keyCode)
+        public OutputFactory AddKeyUp(VirtualKeyCode keyCode)
         {
-            Input Up = new Input
+            Output Up = new Output
             {
                 Type = (uint)InputType.Keyboard,
                 Data =
                 {
-                    Keyboard = new KeyboardInput
+                    Keyboard = new KeyboardOutput
                     {
                         KeyCode = (ushort)keyCode,
                         Scan = (ushort)(Methods.MapVirtualKey((uint)keyCode, 0) & 0xFFU),
@@ -115,23 +112,23 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddKeyPress(VirtualKeyCode keyCode)
+        public OutputFactory AddKeyPress(VirtualKeyCode keyCode)
         {
             AddKeyDown(keyCode);
             AddKeyUp(keyCode);
             return this;
         }
 
-        public OutputManager AddCharacter(char character)
+        public OutputFactory AddCharacter(char character)
         {
             ushort scanCode = character;
 
-            Input Down = new Input
+            Output Down = new Output
             {
                 Type = (uint)InputType.Keyboard,
                 Data =
                 {
-                    Keyboard = new KeyboardInput
+                    Keyboard = new KeyboardOutput
                     {
                         KeyCode = 0,
                         Scan = scanCode,
@@ -142,12 +139,12 @@ namespace Unary.IOManager.Managers
                 }
             };
 
-            Input Up = new Input
+            Output Up = new Output
             {
                 Type = (uint)InputType.Keyboard,
                 Data =
                 {
-                    Keyboard = new KeyboardInput
+                    Keyboard = new KeyboardOutput
                     {
                         KeyCode = 0,
                         Scan = scanCode,
@@ -169,7 +166,7 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddCharacters(IEnumerable<char> characters)
+        public OutputFactory AddCharacters(IEnumerable<char> characters)
         {
             foreach (var character in characters)
             {
@@ -178,14 +175,14 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddCharacters(string characters)
+        public OutputFactory AddCharacters(string characters)
         {
             return AddCharacters(characters.ToCharArray());
         }
 
-        public OutputManager AddRelativeMouseMovement(int x, int y)
+        public OutputFactory AddRelativeMouseMovement(int x, int y)
         {
-            Input Movement = new Input { Type = (uint)InputType.Mouse };
+            Output Movement = new Output { Type = (uint)InputType.Mouse };
             Movement.Data.Mouse.Flags = (uint)MouseFlag.Move;
             Movement.Data.Mouse.X = x;
             Movement.Data.Mouse.Y = y;
@@ -195,9 +192,9 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddAbsoluteMouseMovement(int absoluteX, int absoluteY)
+        public OutputFactory AddAbsoluteMouseMovement(int absoluteX, int absoluteY)
         {
-            Input Movement = new Input { Type = (uint)InputType.Mouse };
+            Output Movement = new Output { Type = (uint)InputType.Mouse };
             Movement.Data.Mouse.Flags = (uint)(MouseFlag.Move | MouseFlag.Absolute);
             Movement.Data.Mouse.X = absoluteX;
             Movement.Data.Mouse.Y = absoluteY;
@@ -207,9 +204,9 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddAbsoluteMouseMovementOnVirtualDesktop(int absoluteX, int absoluteY)
+        public OutputFactory AddAbsoluteMouseMovementOnVirtualDesktop(int absoluteX, int absoluteY)
         {
-            var Movement = new Input { Type = (uint)InputType.Mouse };
+            var Movement = new Output { Type = (uint)InputType.Mouse };
             Movement.Data.Mouse.Flags = (uint)(MouseFlag.Move | MouseFlag.Absolute | MouseFlag.VirtualDesk);
             Movement.Data.Mouse.X = absoluteX;
             Movement.Data.Mouse.Y = absoluteY;
@@ -219,18 +216,18 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddMouseButtonDown(MouseButton button)
+        public OutputFactory AddMouseButtonDown(MouseButton button)
         {
-            var Down = new Input { Type = (uint)InputType.Mouse };
+            var Down = new Output { Type = (uint)InputType.Mouse };
             Down.Data.Mouse.Flags = (uint)ToMouseButtonDownFlag(button);
             List.Add(Down);
 
             return this;
         }
 
-        public OutputManager AddMouseXButtonDown(int xButtonId)
+        public OutputFactory AddMouseXButtonDown(int xButtonId)
         {
-            var Down = new Input { Type = (uint)InputType.Mouse };
+            var Down = new Output { Type = (uint)InputType.Mouse };
             Down.Data.Mouse.Flags = (uint)MouseFlag.XDown;
             Down.Data.Mouse.MouseData = (uint)xButtonId;
             List.Add(Down);
@@ -238,18 +235,18 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddMouseButtonUp(MouseButton button)
+        public OutputFactory AddMouseButtonUp(MouseButton button)
         {
-            var Up = new Input { Type = (uint)InputType.Mouse };
+            var Up = new Output { Type = (uint)InputType.Mouse };
             Up.Data.Mouse.Flags = (uint)ToMouseButtonUpFlag(button);
             List.Add(Up);
 
             return this;
         }
 
-        public OutputManager AddMouseXButtonUp(int xButtonId)
+        public OutputFactory AddMouseXButtonUp(int xButtonId)
         {
-            var Up = new Input { Type = (uint)InputType.Mouse };
+            var Up = new Output { Type = (uint)InputType.Mouse };
             Up.Data.Mouse.Flags = (uint)MouseFlag.XUp;
             Up.Data.Mouse.MouseData = (uint)xButtonId;
             List.Add(Up);
@@ -257,29 +254,29 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddMouseButtonClick(MouseButton button)
+        public OutputFactory AddMouseButtonClick(MouseButton button)
         {
             return AddMouseButtonDown(button).AddMouseButtonUp(button);
         }
 
-        public OutputManager AddMouseXButtonClick(int xButtonId)
+        public OutputFactory AddMouseXButtonClick(int xButtonId)
         {
             return AddMouseXButtonDown(xButtonId).AddMouseXButtonUp(xButtonId);
         }
 
-        public OutputManager AddMouseButtonDoubleClick(MouseButton button)
+        public OutputFactory AddMouseButtonDoubleClick(MouseButton button)
         {
             return AddMouseButtonClick(button).AddMouseButtonClick(button);
         }
 
-        public OutputManager AddMouseXButtonDoubleClick(int xButtonId)
+        public OutputFactory AddMouseXButtonDoubleClick(int xButtonId)
         {
             return AddMouseXButtonClick(xButtonId).AddMouseXButtonClick(xButtonId);
         }
 
-        public OutputManager AddMouseVerticalWheelScroll(int scrollAmount)
+        public OutputFactory AddMouseVerticalWheelScroll(int scrollAmount)
         {
-            var Scroll = new Input { Type = (uint)InputType.Mouse };
+            var Scroll = new Output { Type = (uint)InputType.Mouse };
             Scroll.Data.Mouse.Flags = (uint)MouseFlag.VerticalWheel;
             Scroll.Data.Mouse.MouseData = (uint)scrollAmount;
             List.Add(Scroll);
@@ -287,9 +284,9 @@ namespace Unary.IOManager.Managers
             return this;
         }
 
-        public OutputManager AddMouseHorizontalWheelScroll(int scrollAmount)
+        public OutputFactory AddMouseHorizontalWheelScroll(int scrollAmount)
         {
-            var Scroll = new Input { Type = (uint)InputType.Mouse };
+            var Scroll = new Output { Type = (uint)InputType.Mouse };
             Scroll.Data.Mouse.Flags = (uint)MouseFlag.HorizontalWheel;
             Scroll.Data.Mouse.MouseData = (uint)scrollAmount;
 
@@ -336,8 +333,8 @@ namespace Unary.IOManager.Managers
 
         public bool Dispatch()
         {
-            Input[] Result = ToArray();
-            var Successfull = Methods.SendInput((uint)Result.Length, Result, Marshal.SizeOf(typeof(Input)));
+            Output[] Result = ToArray();
+            var Successfull = Methods.SendInput((uint)Result.Length, Result, Marshal.SizeOf(typeof(Output)));
             if(Successfull != Result.Length)
             {
                 return false;

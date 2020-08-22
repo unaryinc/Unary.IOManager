@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,26 +42,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Managers\InputManager.cs" />
-    <Compile Include="Managers\OutputManager.cs" />
+    <Compile Include="Managers\App.cs" />
+    <Compile Include="Managers\Arguments.cs" />
+    <Compile Include="Managers\OutputFactory.cs" />
     <Compile Include="IOManager.cs" />
-    <Compile Include="Managers\KeyboardManager.cs" />
-    <Compile Include="Managers\MouseManager.cs" />
-    <Compile Include="Managers\WindowManager.cs" />
-    <Compile Include="Native\HardwareInput.cs" />
-    <Compile Include="Native\HookType.cs" />
-    <Compile Include="Native\Input.cs" />
-    <Compile Include="Native\InputData.cs" />
+    <Compile Include="Managers\Keyboard.cs" />
+    <Compile Include="Managers\Mouse.cs" />
+    <Compile Include="Managers\Window.cs" />
+    <Compile Include="Native\HardwareOutput.cs" />
+    <Compile Include="Native\Output.cs" />
+    <Compile Include="Native\OutputData.cs" />
     <Compile Include="Native\InputType.cs" />
     <Compile Include="Native\KeyboardFlag.cs" />
-    <Compile Include="Native\KeyboardInput.cs" />
-    <Compile Include="Native\KeyboardInputType.cs" />
+    <Compile Include="Native\KeyboardOutput.cs" />
     <Compile Include="Native\Methods.cs" />
     <Compile Include="Native\MouseButton.cs" />
     <Compile Include="Native\MouseFlag.cs" />
-    <Compile Include="Native\MouseInput.cs" />
-    <Compile Include="Native\MouseInputType.cs" />
+    <Compile Include="Native\MouseOutput.cs" />
     <Compile Include="Native\VirtualKeyCode.cs" />
+    <Compile Include="Native\WindowFlag.cs" />
     <Compile Include="Native\XButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
