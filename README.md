@@ -61,17 +61,17 @@ Example: Key-down and Key-up
 public void ShoutHello()
 {
   // Simulate each key stroke
-  InputSimulator.SimulateKeyDown(VirtualKeyCode.SHIFT);
-  InputSimulator.SimulateKeyPress(VirtualKeyCode.VK_H);
-  InputSimulator.SimulateKeyPress(VirtualKeyCode.VK_E);
-  InputSimulator.SimulateKeyPress(VirtualKeyCode.VK_L);
-  InputSimulator.SimulateKeyPress(VirtualKeyCode.VK_L);
-  InputSimulator.SimulateKeyPress(VirtualKeyCode.VK_O);
-  InputSimulator.SimulateKeyPress(VirtualKeyCode.VK_1);
-  InputSimulator.SimulateKeyUp(VirtualKeyCode.SHIFT);
+  IO.Keyboard.KeyDown(VirtualKeyCode.SHIFT);
+  IO.Keyboard.KeyPress(VirtualKeyCode.VK_H);
+  IO.Keyboard.KeyPress(VirtualKeyCode.VK_E);
+  IO.Keyboard.KeyPress(VirtualKeyCode.VK_L);
+  IO.Keyboard.KeyPress(VirtualKeyCode.VK_L);
+  IO.Keyboard.KeyPress(VirtualKeyCode.VK_O);
+  IO.Keyboard.KeyPress(VirtualKeyCode.VK_1);
+  IO.Keyboard.KeyUp(VirtualKeyCode.SHIFT);
 
   // Alternatively you can simulate text entry to acheive the same end result
-  InputSimulator.SimulateTextEntry("HELLO!");
+  IO.Keyboard.SimulateTextEntry("HELLO!");
 }
 ```
 
@@ -81,17 +81,17 @@ Example: Modified keystrokes such as CTRL-C
 public void SimulateSomeModifiedKeystrokes()
 {
   // CTRL-C (effectively a copy command in many situations)
-  InputSimulator.SimulateModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
+  IO.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
 
   // You can simulate chords with multiple modifiers
   // For example CTRL-K-C whic is simulated as
   // CTRL-down, K, C, CTRL-up
-  InputSimulator.SimulateModifiedKeyStroke(VirtualKeyCode.CONTROL, new [] {VirtualKeyCode.VK_K, VirtualKeyCode.VK_C});
+  IO.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, new [] {VirtualKeyCode.VK_K, VirtualKeyCode.VK_C});
 
   // You can simulate complex chords with multiple modifiers and key presses
   // For example CTRL-ALT-SHIFT-ESC-K which is simulated as
   // CTRL-down, ALT-down, SHIFT-down, press ESC, press K, SHIFT-up, ALT-up, CTRL-up
-  InputSimulator.SimulateModifiedKeyStroke(
+  IO.Keyboard.ModifiedKeyStroke(
     new[] { VirtualKeyCode.CONTROL, VirtualKeyCode.MENU, VirtualKeyCode.SHIFT },
     new[] { VirtualKeyCode.ESCAPE, VirtualKeyCode.VK_K });
 }
@@ -102,7 +102,7 @@ Example: Simulate text entry
 ```csharp
 public void SayHello()
 {
-  InputSimulator.SimulateTextEntry("Say hello!");
+  IO.Keyboard.TextEntry("Say hello!");
 }
 ```
 
@@ -112,9 +112,9 @@ Example: Determine the state of different types of keys
 public void GetKeyStatus()
 {
   // Determines if the shift key is currently down
-  var isShiftKeyDown = InputSimulator.IsKeyDown(VirtualKeyCode.SHIFT);
+  var isShiftKeyDown = IO.Keyboard.IsKeyDown(VirtualKeyCode.SHIFT);
 
   // Determines if the caps lock key is currently in effect (toggled on)
-  var isCapsLockOn = InputSimulator.IsTogglingKeyInEffect(VirtualKeyCode.CAPITAL);
+  var isCapsLockOn = IO.Keyboard.IsTogglingKeyInEffect(VirtualKeyCode.CAPITAL);
 }
 ```
